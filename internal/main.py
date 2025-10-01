@@ -1,5 +1,6 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, status
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
 from .controllers.geo import router as geo_router
 import uvicorn
 
@@ -17,6 +18,15 @@ async def http_exception_handler(request, exc):
     return JSONResponse(
         status_code=exc.status_code,
         content={"error": exc.detail}
+    )
+
+
+# this one is for pydantic validation errors so it throws a 400 instead of a 422
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request, exc: RequestValidationError):
+    return JSONResponse(
+        status_code=status.HTTP_400_BAD_REQUEST,
+        content={"detail": exc.errors()},
     )
 
 
