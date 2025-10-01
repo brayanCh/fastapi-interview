@@ -7,6 +7,9 @@ app = FastAPI()
 
 app.include_router(geo_router, prefix="/geo", tags=["geo"])
 
+@app.get("/")
+async def root():
+    return {"message": "Hello World"}
 
 @app.exception_handler(HTTPException)
 async def http_exception_handler(request, exc):
