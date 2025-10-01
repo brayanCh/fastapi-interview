@@ -2,7 +2,6 @@ import pytest
 from internal.services.geo import process_coordinates
 from internal.dto.geo import CoordinatePoint
 
-
 class TestGeoService:
     
     def test_process_single_point(self):
